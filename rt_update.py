@@ -29,21 +29,19 @@ print(bs)
 
 # pagenumber += 1
 
-print('Start Loop')
-
 for review in bs.findAll('li', {'class': 'audience-reviews__item'}):
 
-                print('In Loop')
-
-                # rating = review.findAll('span')[1].contents
+                # Find username
                 username = review.find("a", {"class": 'audience-reviews__name'})
                 username = username.text
-                # date = review.find("span", {"class": "fr small subtle"}).contents
                 
-                # #find the text
-                # review = review.find('div', attrs={'class': 'user_review'})
-                # text  = review.text
+                # find date
+                date = review.find("span", {"class": "audience-reviews__duration"}).contents
                 
+                # Find the text
+                review = review.find('p', attrs={'class': 'audience-reviews__review'})
+                text  = review.text
+
                 # # find the rating 
                 # find_rating = review.find("div", {"class": "scoreWrapper" })
                 # string_rating = str(find_rating)
