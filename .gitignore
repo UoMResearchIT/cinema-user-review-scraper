@@ -1,6 +1,5 @@
-.vscode
-venv
-laptop_venv
+.vs
+haneke_venv
 *.csv
 *.xlsx
 *.log
