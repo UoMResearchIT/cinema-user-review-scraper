@@ -14,6 +14,7 @@ import re
 
 date_list = []
 username_list = []
+user_details_list = []
 rating_list = []
 text_list = []
 useful_list = []
@@ -38,40 +39,54 @@ for page in range(number_reviews):
     for review in bs.findAll('div', {'class': 'hred review-card cf'}):
     
         # Rating
-        rating = review.find("span", {"class": "stareval-note"}).contents
+        rating = str(review.find("span", {"class": "stareval-note"}).contents)
         
         # Username
-        username = review.findAll("span")[1].contents
+        username = str(review.findAll("span")[1].contents)
+
+        # User details
+        try:
+                user_details = str(review.find("p", {"class": "meta-content light"}).contents)
+                user_details = re.sub("<span.*>", "", user_details)
+                user_details = re.sub("</span>", "", user_details)
+                user_details = re.sub("'\\n'", "", user_details)
+                user_details = user_details.replace("'\\n'", "")
+                user_details = user_details.replace(",", "")
+                user_details = user_details.replace("[", "")
+                user_details = user_details.replace("]", "")
+                user_details = user_details.replace("Suivre son activité", "")
+                user_details = user_details.strip()
+
+        except:
+                user_details = 'No User Details'
+
 
         # Date
-        date = review.find("span", {"class": "review-card-meta-date light" })
-        date_text = date.text
-        date_text_strip = re.sub("[^0-9/]", "", date_text)
+        # date = review.find("span", {"class": "review-card-meta-date light" })
+        # date_text = date.text
+        # date_text_strip = re.sub("[^0-9/]", "", date_text)
 
         # Review Text
         review_text = bs.findAll("div", attrs={"class": "content-txt review-card-content"})[loop_count]
         text = review_text.text
         loop_count += 1
 
-        # Followers    
-        # new_soup = review.text
-        # followers = new_soup.findAll(text="abonnés")
+        # Usefulness 
+        usefulness = bs.findAll("div", {"class": "review-card-social"})
+        print(usefulness)
 
-
-        # Number of Reviews
-
-        # Usefulness    
-        date_list.append(date_text_strip)
+        # Add to list
         username_list.append(username)
         rating_list.append(rating)
         text_list.append(text)
+        user_details_list.append(user_details)
     
 
 # Create dataframe
 review_data = pd.DataFrame(
     {
-     'Date': date_list,
      'Username': username_list,
+     'User Details': user_details_list,
      'Rating (out of 5)': rating_list,
      'Review Text': text_list,
      }
@@ -81,6 +96,7 @@ review_data = pd.DataFrame(
 
 # review_data.sort_values(by='Date')
 
+#JSOn data co to CSV
+
 review_data.to_csv('ac_review_data.csv')
-review_data.to_excel('ac_review_data.xlsx')
 
