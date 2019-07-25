@@ -1,5 +1,6 @@
 .vs
 haneke_venv
+haneke_remote
 *.csv
 *.xlsx
 *.log
