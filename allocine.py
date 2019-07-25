@@ -6,7 +6,6 @@
 from bs4 import BeautifulSoup 
 import requests, sys, webbrowser, bs4
 import pandas as pd
-import openpyxl
 import json
 import re
 
@@ -24,10 +23,15 @@ pagenumber = 1
 
 number_reviews = 31
 
+
+film_name = input("Enter the title of film: ")
+url_input = input("Enter URL of User Reviews: ")
+
+
 for page in range(number_reviews):
 
 
-    url = 'http://www.allocine.fr/film/fichefilm-43921/critiques/spectateurs/?page=%s' % pagenumber
+    url = url_input + '?page=' + str(pagenumber)
     r = requests.get(url)
     bs = BeautifulSoup(r.text, 'html.parser')
 
@@ -97,6 +101,6 @@ review_data = pd.DataFrame(
 # review_data.sort_values(by='Date')
 
 #JSOn data co to CSV
-
-review_data.to_csv('ac_review_data.csv')
+csv_name = film_name
+review_data.to_csv('allocine_' + film_name + '.csv')
 
