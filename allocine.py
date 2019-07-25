@@ -102,5 +102,5 @@ review_data = pd.DataFrame(
 
 #JSOn data co to CSV
 csv_name = film_name
-review_data.to_csv('allocine_' + film_name + '.csv')
+review_data.to_csv(film_name + '_allocine.csv')
 
