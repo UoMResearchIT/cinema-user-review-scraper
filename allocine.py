@@ -21,7 +21,9 @@ useful_list = []
 loop_count = 0
 pagenumber = 1
 
-number_reviews = 31
+
+#TODO Find the review number and divide by number of reviews on page, or find the number of pages
+number_reviews = 22
 
 
 film_name = input("Enter the title of film: ")
@@ -78,6 +80,12 @@ for page in range(number_reviews):
         # Usefulness 
         usefulness = bs.findAll("div", {"class": "review-card-social"})
         print(usefulness)
+
+        #TODO separate the Usefulness into subscribers and reviewers
+
+        #TODO Format username and ratings to not have square brackets or inverted commmas
+
+        #TODO Add happy face, sad face
 
         # Add to list
         username_list.append(username)
