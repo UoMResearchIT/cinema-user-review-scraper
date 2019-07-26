@@ -1,4 +1,6 @@
+.vscode
 .vs
+haneke
 haneke_venv
 haneke_remote
 *.csv
