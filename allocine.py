@@ -27,7 +27,7 @@ pagenumber = 1
 
 
 #TODO Find the review number and divide by number of reviews on page, or find the number of pages
-number_reviews = 22
+number_reviews = 3
 
 
 # film_name = input("Enter the title of film: ")
@@ -51,7 +51,9 @@ for page in range(number_reviews):
     
         # Rating
         rating = str(review.find("span", {"class": "stareval-note"}).contents)
-        
+        rating = rating[2:5]
+        print(rating)
+
         # Username
         username = review.findAll("span")[1].contents
         username = ''.join(username)
