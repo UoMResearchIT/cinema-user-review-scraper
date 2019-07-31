@@ -9,35 +9,37 @@ import pandas as pd
 import json
 import re
 
-# Go To User Review URL and load all the reviews
+#Lists of all the different componenets of the data
 
-date_list = []
+# Username
 username_list = []
-# user_details_list = []
-
+# Number of subscribers the user has
 subscriber_list = []
+# Number of reviews the user has written
 user_review_list = []
-
+# User rating for the film 
 rating_list = []
+# Text of the review
 text_list = []
-# useful_list = []
 
+# Usefulness list (helpful/not helpful)
+usefulreview_list = []
+notusefulreview_list = []
+
+
+# Don't change these variables. They keep count of the loops
 loop_count = 0
 pagenumber = 1
 
-
 #TODO Find the review number and divide by number of reviews on page, or find the number of pages
-number_reviews = 3
+film_name = input("Enter the title of film: ")
+url_input = input("Enter URL of User Reviews: ")
+number_reviews = int(input("Enter number of pages of reviews: "))
 
-
-# film_name = input("Enter the title of film: ")
-# url_input = input("Enter URL of User Reviews: ")
-
-url_input = 'http://www.allocine.fr/film/fichefilm-43921/critiques/spectateurs/'
 
 for page in range(number_reviews):
 
-
+    # Page URL
     url = url_input + '?page=' + str(pagenumber)
     r = requests.get(url)
     bs = BeautifulSoup(r.text, 'html.parser')
@@ -45,14 +47,22 @@ for page in range(number_reviews):
     pagenumber += 1
 
     loop_count = 0
+    
+    # Usefulness # uses the whole soup so put the whole pages into a list, then when each review is looped over I add the first two objects
+    # in the list then delete them, and so on
 
+    usefulness_list = []
 
+    for node in bs.findAll("a", {"class": "button button-xs button-helpful button-disabled"}):
+                    usefulness = ''.join(node.findAll(text=True))
+                    usefulness_list.append(usefulness)
+
+    # Finds the reviews in the Beautiful Soup, and parses it for the different parts 
     for review in bs.findAll('div', {'class': 'hred review-card cf'}):
     
         # Rating
         rating = str(review.find("span", {"class": "stareval-note"}).contents)
         rating = rating[2:5]
-        print(rating)
 
         # Username
         username = review.findAll("span")[1].contents
@@ -90,14 +100,10 @@ for page in range(number_reviews):
                 if len(stripped) == 3:
                         subscribers = stripped[0]
                         user_reviews = stripped[1] + stripped[2]
-                        # print(subscribers)
-                        # print(user_reviews)
                 # if there's two number separate them in to subscriber for first and followers second
                 elif len(stripped) == 2:
                         subscribers = stripped[0]
                         user_reviews = stripped[1]
-                        # print(subscribers)
-                        # print(user_reviews)
                 # If there's only one number we figure out if its a subscriber or number of reviews
                 elif len(stripped) == 1:
                         if re.search(r'\bcritiques\b', user_details) != None:
@@ -112,23 +118,16 @@ for page in range(number_reviews):
                 user_details = 'No User Details'
 
 
-        # Date
-        # date = review.find("span", {"class": "review-card-meta-date light" })
-        # date_text = date.text
-        # date_text_strip = re.sub("[^0-9/]", "", date_text)
 
         # Review Text
         review_text = bs.findAll("div", attrs={"class": "content-txt review-card-content"})[loop_count]
         text = review_text.text
         loop_count += 1
 
-        # Usefulness 
-        usefulness = bs.findAll("div", {"class": "review-card-social"})
-        # print(usefulness)
-
-        #TODO Format username and ratings to not have square brackets or inverted commmas
-
-        #TODO Add happy face, sad face
+        # Usefulness
+        useful_review = usefulness_list[0]
+        not_useful_review = usefulness_list[1]
+        del usefulness_list[:2]
 
 
         # if the username is equal to the rating that means the user is a vistor and hasnt registered
@@ -143,6 +142,8 @@ for page in range(number_reviews):
         user_review_list.append(user_reviews)
         rating_list.append(rating)
         text_list.append(text)
+        usefulreview_list.append(useful_review)
+        notusefulreview_list.append(not_useful_review)
     
 
 # Create dataframe
@@ -153,11 +154,13 @@ review_data = pd.DataFrame(
      'No. of Reviews': user_review_list,
      'Rating (out of 5)': rating_list,
      'Review Text': text_list,
+     'Helpful': usefulreview_list,
+     'Not Helpful': notusefulreview_list
      }
 )
 
 
 #JSOn data co to CSV
-# csv_name = film_name
-review_data.to_csv('CACHE.csv')
+csv_name = film_name
+review_data.to_csv(csv_name + '_allocine.csv')
 
