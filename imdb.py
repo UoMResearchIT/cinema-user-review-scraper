@@ -11,19 +11,19 @@ import openpyxl
 
 # Go To User Review URL and load all the reviews
 
-browser = webdriver.Firefox()
+# browser = webdriver.Firefox()
 # browser = webdriver.Firefox(executable_path=r'C:\Program Files\geckodriver\geckodriver.exe')
 
-browser.get('https://www.imdb.com/title/tt0387898/reviews')
+# browser.get('https://www.imdb.com/title/tt0387898/reviews')
 
-next_button = browser.find_element_by_id('load-more-trigger')
-type(next_button)
+# next_button = browser.find_element_by_id('load-more-trigger')
+# type(next_button)
 
 review_count = 326
 
-for a in range(review_count):
-    next_button.click()
-    time.sleep(2)
+# for a in range(review_count):
+    # next_button.click()
+    # time.sleep(2)
 
 
 url = 'https://www.imdb.com/title/tt0387898/reviews'
@@ -74,6 +74,6 @@ review_data = pd.DataFrame(
      }
 )
 
-review_data.to_csv('review_data.csv')
+review_data.to_csv('imdb.csv')
 review_data.to_excel('review_data.xlsx')
 
