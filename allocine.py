@@ -35,7 +35,6 @@ number_reviews = 22
 
 url_input = 'http://www.allocine.fr/film/fichefilm-43921/critiques/spectateurs/'
 
-
 for page in range(number_reviews):
 
 
@@ -54,7 +53,8 @@ for page in range(number_reviews):
         rating = str(review.find("span", {"class": "stareval-note"}).contents)
         
         # Username
-        username = str(review.findAll("span")[1].contents)
+        username = review.findAll("span")[1].contents
+        username = ''.join(username)
 
         # Gets Subscriber and User Review numbers
         try:
@@ -123,8 +123,6 @@ for page in range(number_reviews):
         # Usefulness 
         usefulness = bs.findAll("div", {"class": "review-card-social"})
         # print(usefulness)
-
-        #TODO DONE separate the Usefulness into subscribers and reviewers
 
         #TODO Format username and ratings to not have square brackets or inverted commmas
 
