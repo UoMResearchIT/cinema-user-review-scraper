@@ -41,7 +41,10 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         # rating = review.findAll('span', {'class' : 'rating-other-user-rating'}) 
         # user_rating = rating.span[2].contents
         title = review.a.contents
-        title = ''.join(title)
+        try:
+            title = ''.join(title)
+        except:
+            title = "No Title Given"
 
         date = str(review.find("span", {"class": "review-date"}).contents)
         rating = str(review.findAll('span')[1].contents)
