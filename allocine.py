@@ -21,6 +21,8 @@ user_review_list = []
 rating_list = []
 # Text of the review
 text_list = []
+# Date List
+date_list = []
 
 # Usefulness list (helpful/not helpful)
 usefulreview_list = []
@@ -59,6 +61,31 @@ for page in range(number_reviews):
 
     # Finds the reviews in the Beautiful Soup, and parses it for the different parts 
     for review in bs.findAll('div', {'class': 'hred review-card cf'}):
+
+
+        # Date
+        date = review.find("span", {"class": "review-card-meta-date light" })
+        # date = review.find("span", {"class": "review-card-meta-date light" })
+        date_text = date.text
+        date_text = date_text.replace("Publiée le", "")
+        
+        try:
+                date_text = date_text.replace("janvier", "1")
+                date_text = date_text.replace("février", "2")
+                date_text = date_text.replace("mars", "3")
+                date_text = date_text.replace("avril", "4")
+                date_text = date_text.replace("mai", "5")
+                date_text = date_text.replace("juin", "6")
+                date_text = date_text.replace("juillet", "7")
+                date_text = date_text.replace("août", "8")
+                date_text = date_text.replace("septembre", "9")
+                date_text = date_text.replace("octobre", "10")
+                date_text = date_text.replace("novembre", "11")
+                date_text = date_text.replace("décembre", "12")
+        except:
+                date_text = 'No Date'
+
+
     
         # Rating
         rating = str(review.find("span", {"class": "stareval-note"}).contents)
@@ -138,6 +165,7 @@ for page in range(number_reviews):
 
         # Add to list
         username_list.append(username)
+        date_list.append(date_text)
         subscriber_list.append(subscribers)
         user_review_list.append(user_reviews)
         rating_list.append(rating)
@@ -152,13 +180,13 @@ review_data = pd.DataFrame(
      'Username': username_list,
      'Subscribers': subscriber_list,
      'No. of Reviews': user_review_list,
+     'Date of Review': date_list,
      'Rating (out of 5)': rating_list,
      'Review Text': text_list,
      'Helpful': usefulreview_list,
      'Not Helpful': notusefulreview_list
      }
 )
-
 
 #JSOn data co to CSV
 csv_name = film_name
