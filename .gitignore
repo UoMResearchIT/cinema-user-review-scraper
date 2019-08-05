@@ -4,6 +4,7 @@ haneke
 haneke_venv
 haneke_remote
 haneke_allocine
+haneke_imdb
 *.csv
 *.xlsx
 *.log
