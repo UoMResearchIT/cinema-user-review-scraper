@@ -209,23 +209,23 @@ for page in range(number_reviews):
 review_data = pd.DataFrame(
     {
      'Username': username_list,
+     '300 Club': sparta_list,
      'Subscribers': subscriber_list,
      'No. of Reviews': user_review_list,
-     'Date of Review': date_list,
-     'French Date': french_date_list,
+     'Date': date_list,
+#      'French Date': french_date_list,
      'Rating (out of 5)': rating_list,
      'Review Text': text_list,
      'Helpful': usefulreview_list,
      'Not Helpful': notusefulreview_list,
-     '300 Club': sparta_list,
      }
 )
 
 review_data['Notes'] = ''
 
-review_data['Date of Review'] =  pd.to_datetime(review_data['Date of Review'], format='%d/%m/%Y')
+review_data['Date'] =  pd.to_datetime(review_data['Date of Review'], format='%d/%m/%Y')
 
-review_data['Date of Review'] = review_data['Date of Review'].dt.strftime('%d/%m/%Y')
+review_data['Date'] = review_data['Date of Review'].dt.strftime('%d/%m/%Y')
 
 
 #JSOn data co to CSV
