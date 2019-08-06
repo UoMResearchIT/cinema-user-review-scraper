@@ -24,6 +24,7 @@ username_list = []
 date_list = []
 text_list = []
 useful_list = []
+useful_total_list = []
 
 for page in range(number_of_reviews):
     try:
@@ -63,22 +64,23 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         date = ''.join(date)
 
         try:    
-            date = date.replace("January", "1")
-            date = date.replace("February", "2")
-            date = date.replace("March", "3")
-            date = date.replace("April", "4")
-            date = date.replace("May", "5")
-            date = date.replace("June", "6")
-            date = date.replace("July", "7")
-            date = date.replace("August", "8")
-            date = date.replace("September", "9")
-            date = date.replace("October", "10")
-            date = date.replace("November", "11")
-            date = date.replace("December", "12")
+            date = date.replace("January", "/1/")
+            date = date.replace("February", "/2/")
+            date = date.replace("March", "/3/")
+            date = date.replace("April", "/4/")
+            date = date.replace("May", "/5/")
+            date = date.replace("June", "/6/")
+            date = date.replace("July", "/7/")
+            date = date.replace("August", "/8/")
+            date = date.replace("September", "/9/")
+            date = date.replace("October", "/10/")
+            date = date.replace("November", "/11/")
+            date = date.replace("December", "/12/")
         
         except:
             date = 'No Date'
 
+        date = date.replace(" ", "")
 
         # Username
         username = review.findAll("a")[1].contents
@@ -95,6 +97,13 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         useful = useful.text
         useful = useful.replace("Was this review helpful?  Sign in to vote.", "")
         useful = useful.replace("Permalink", "")
+        useful = str(useful)
+        
+        stripped = re.findall(r"\b\d+\b", useful)
+
+        useful = stripped[0]
+        useful_total = stripped[1]
+
         useful_loop_count += 1
 
 
@@ -114,18 +123,27 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         username_list.append(username)
         date_list.append(date)
         text_list.append(text)
-        useful_list.append(useful)  
+        useful_list.append(useful)
+        useful_total_list.append(useful_total)  
 
 # Create dataframe
 review_data = pd.DataFrame(
-    {'Title': title_list,
-     'Rating (out of 10)': rating_list,
-     'Username': username_list,
-     'Date': date_list,
-     'Review Text': text_list,
-     'Usefulness': useful_list,
+    {
+        'Username': username_list,
+        'Date': date_list,
+        'Title': title_list,
+        'Rating (out of 10)': rating_list,
+        'Review Text': text_list,
+        'No. Found Review Useful': useful_list,
+        'Usefulness Total': useful_total_list,
      }
 )
+
+review_data['Notes'] = ''
+
+review_data['Date'] =  pd.to_datetime(review_data['Date'], format='%d/%m/%Y')
+
+review_data['Date'] = review_data['Date'].dt.strftime('%d/%m/%Y')
 
 review_data.to_csv(film_name + '_imdb.csv')
 
