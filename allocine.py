@@ -28,6 +28,14 @@ date_list = []
 usefulreview_list = []
 notusefulreview_list = []
 
+# Member of 300 Club
+sparta_list = []
+
+# French Date
+french_date_list = []
+
+notes = []
+
 
 # Don't change these variables. They keep count of the loops
 loop_count = 0
@@ -62,29 +70,38 @@ for page in range(number_reviews):
     # Finds the reviews in the Beautiful Soup, and parses it for the different parts 
     for review in bs.findAll('div', {'class': 'hred review-card cf'}):
 
+        # print(review)
+
 
         # Date
         date = review.find("span", {"class": "review-card-meta-date light" })
         # date = review.find("span", {"class": "review-card-meta-date light" })
         date_text = date.text
         date_text = date_text.replace("Publiée le", "")
+        date_text = date_text.replace("\n", "")
+        date_text = str(date_text)
+
+        french_date = date_text
         
         try:
-                date_text = date_text.replace("janvier", "1")
-                date_text = date_text.replace("février", "2")
-                date_text = date_text.replace("mars", "3")
-                date_text = date_text.replace("avril", "4")
-                date_text = date_text.replace("mai", "5")
-                date_text = date_text.replace("juin", "6")
-                date_text = date_text.replace("juillet", "7")
-                date_text = date_text.replace("août", "8")
-                date_text = date_text.replace("septembre", "9")
-                date_text = date_text.replace("octobre", "10")
-                date_text = date_text.replace("novembre", "11")
-                date_text = date_text.replace("décembre", "12")
+                date_text = date_text.replace("janvier", "/01/")
+                date_text = date_text.replace("février", "/02/")
+                date_text = date_text.replace("mars", "/03/")
+                date_text = date_text.replace("avril", "/04/")
+                date_text = date_text.replace("mai", "/05/")
+                date_text = date_text.replace("juin", "/06/")
+                date_text = date_text.replace("juillet", "/07/")
+                date_text = date_text.replace("août", "/08/")
+                date_text = date_text.replace("septembre", "/09/")
+                date_text = date_text.replace("octobre", "/10/")
+                date_text = date_text.replace("novembre", "/11/")
+                date_text = date_text.replace("décembre", "/12/")
         except:
                 date_text = 'No Date'
+                
+        date_text = date_text.replace(" ", "")
 
+        
 
     
         # Rating
@@ -163,6 +180,18 @@ for page in range(number_reviews):
                 subscribers = 0
                 user_reviews = 0
 
+
+                
+        # Look for 300 Club                
+        
+        sparta = review.findAll("img", attrs={"title": "Membre du Club 300 Allociné"})
+        
+        if sparta :
+                sparta = 'Yes'
+        else:
+                sparta = 'No'
+
+
         # Add to list
         username_list.append(username)
         date_list.append(date_text)
@@ -172,6 +201,8 @@ for page in range(number_reviews):
         text_list.append(text)
         usefulreview_list.append(useful_review)
         notusefulreview_list.append(not_useful_review)
+        sparta_list.append(sparta)
+        french_date_list.append(french_date)
     
 
 # Create dataframe
@@ -181,12 +212,21 @@ review_data = pd.DataFrame(
      'Subscribers': subscriber_list,
      'No. of Reviews': user_review_list,
      'Date of Review': date_list,
+     'French Date': french_date_list,
      'Rating (out of 5)': rating_list,
      'Review Text': text_list,
      'Helpful': usefulreview_list,
-     'Not Helpful': notusefulreview_list
+     'Not Helpful': notusefulreview_list,
+     '300 Club': sparta_list,
      }
 )
+
+review_data['Notes'] = ''
+
+review_data['Date of Review'] =  pd.to_datetime(review_data['Date of Review'], format='%d/%m/%Y')
+
+review_data['Date of Review'] = review_data['Date of Review'].dt.strftime('%d/%m/%Y')
+
 
 #JSOn data co to CSV
 csv_name = film_name
