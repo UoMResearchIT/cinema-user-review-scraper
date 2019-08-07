@@ -223,9 +223,9 @@ review_data = pd.DataFrame(
 
 review_data['Notes'] = ''
 
-review_data['Date'] =  pd.to_datetime(review_data['Date of Review'], format='%d/%m/%Y')
+review_data['Date'] =  pd.to_datetime(review_data['Date'], format='%d/%m/%Y')
 
-review_data['Date'] = review_data['Date of Review'].dt.strftime('%d/%m/%Y')
+review_data['Date'] = review_data['Date'].dt.strftime('%d/%m/%Y')
 
 
 #JSOn data co to CSV
