@@ -4,7 +4,6 @@
 from bs4 import BeautifulSoup 
 import requests, sys, webbrowser, bs4
 import pandas as pd
-import openpyxl
 import re
 
 # Go To User Review URL and load all the reviews

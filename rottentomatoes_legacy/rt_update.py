@@ -3,7 +3,6 @@ from selenium import webdriver
 
 import requests, sys, webbrowser, bs4
 import pandas as pd
-import openpyxl
 import re
 
 # Go To User Review URL and load all the reviews
@@ -19,7 +18,7 @@ url = url_sub
 r = requests.get(url)
 bs = BeautifulSoup(r.text, 'html.parser')
 
-# print(bs)
+print(bs)
 
 review_number = 0 
 total_page_number = 0
@@ -92,4 +91,4 @@ review_data = pd.DataFrame(
 
 review_data.sort_values(by=['Date'])
 
-review_data.to_csv('rt_user_reviews.csv')
+review_data.to_csv('rtomatoes_user_reviews.csv')
