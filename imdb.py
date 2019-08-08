@@ -7,17 +7,23 @@ import requests, sys, webbrowser, bs4
 import pandas as pd
 import re
 
+
+
+# User inputs name of film and URL of user reviews
 film_name = input("Enter the title of film: ")
 url_input = input("Enter URL of User Reviews: ")
 
 url = url_input
 r = requests.get(url)
 
+# Starts browser and navigates to appropiate page
 browser = webdriver.Firefox()
 browser.get(url)
 
+# arbitarily large number of reviews
 number_of_reviews = 1000
 
+# Lists where all the scraped data will go into. 
 title_list = []
 rating_list = []
 username_list = []
@@ -26,32 +32,34 @@ text_list = []
 useful_list = []
 useful_total_list = []
 
+
+# Loop that clicks the load more button until it can no longer do so.
 for page in range(number_of_reviews):
     try:
         button = browser.find_element_by_class_name('ipl-load-more__button')
         button.click()
     except:
-        print('Exception')
+        continue
 
+# Gets HTML of page with ALL user reviews
 bs = BeautifulSoup(browser.page_source, 'html.parser')
 
-permalink_loop_count = 0
 useful_loop_count = 0
 
+# Loops over each review on the page with all user reviews
 for review in bs.findAll('div', {'class': 'review-container'}):
-        # rating = review.findAll('span', {'class' : 'rating-other-user-rating'}) 
-        # user_rating = rating.span[2].contents
+
+        # Gets title of review
         title = review.a.contents
         try:
             title = ''.join(title)
         except:
             title = "No Title Given"
 
+
+        # Checks to see if a rating was given. Sometimes there's none given.
         date = str(review.find("span", {"class": "review-date"}).contents)
         rating = str(review.findAll('span')[1].contents)
-
-        # print(date)
-        # print(rating)
 
         if date == rating:
             rating = "No Rating given"
@@ -63,6 +71,7 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         date = review.find("span", {"class": "review-date"}).contents
         date = ''.join(date)
 
+        # Formats the date into numerical format
         try:    
             date = date.replace("January", "/1/")
             date = date.replace("February", "/2/")
@@ -93,6 +102,7 @@ for review in bs.findAll('div', {'class': 'review-container'}):
 
 
         # Usefullness of Review
+        # Gets the tag then strips all text to leave numbers which are then put into two different columns
         useful = bs.findAll("div", attrs={"class": "actions text-muted"})[useful_loop_count]
         useful = useful.text
         useful = useful.replace("Was this review helpful?  Sign in to vote.", "")
@@ -106,18 +116,7 @@ for review in bs.findAll('div', {'class': 'review-container'}):
 
         useful_loop_count += 1
 
-
-        # Permalink 
-        # permalink = bs.findAll("a", attrs={"href": re.compile("/review/")})[permalink_loop_count]        
-        # permalink = str(permalink)
-        # permalink_loop_count += 1
-        # print(permalink)
-        # link = re.findall(r"\/review\/rw\d\d\d\d\d\d\d\/\?ref_=tt_urv|$", permalink)
-        # link = ''.join(link)
-        # imdb_url = "https://www.imdb.com"
-        # review_link = imdb_url + link
-        # print(review_link)
-
+        # scraped data of review is added to the lists
         title_list.append(title)
         rating_list.append(rating)
         username_list.append(username)
@@ -126,7 +125,7 @@ for review in bs.findAll('div', {'class': 'review-container'}):
         useful_list.append(useful)
         useful_total_list.append(useful_total)  
 
-# Create dataframe
+# Create dataframe, with following columns
 review_data = pd.DataFrame(
     {
         'Username': username_list,
@@ -139,11 +138,15 @@ review_data = pd.DataFrame(
      }
 )
 
+# Create Notes column
 review_data['Notes'] = ''
 
+# Format date column to datetime format
 review_data['Date'] =  pd.to_datetime(review_data['Date'], format='%d/%m/%Y')
 
+# Change date format to European order
 review_data['Date'] = review_data['Date'].dt.strftime('%d/%m/%Y')
 
+# Create CSV with the all the user review data
 review_data.to_csv(film_name + '_imdb.csv')
 
