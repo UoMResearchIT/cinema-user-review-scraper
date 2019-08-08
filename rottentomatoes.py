@@ -31,7 +31,7 @@ super_list = []
 
 # Loops the entire script 5 times
 
-# for love in range(5):
+# Checks the number of times the film has been looped over
 loop_number = 0
 
 # for each page of reviews it will loop over each audience review item 
@@ -55,17 +55,17 @@ for page in range(number_of_reviews):
         date = review.find("span", {"class": "audience-reviews__duration"})
         date = date.text 
 
+        # Checks to see if review as in the last 7 days or not, formats it correctly
         week = "d ago"
 
         if week in date:
             days_ago = date.replace("d ago", "")
             days_ago_int = int(days_ago)
             date = datetime.now() - timedelta(days=days_ago_int)
-
             date = date.strftime('%m/%d/%Y')
             print(date)
 
-
+        # formats the date
         try:    
             date = date.replace("Jan", "1/")
             date = date.replace("Feb", "2/")
@@ -103,7 +103,7 @@ for page in range(number_of_reviews):
 
         rating = full_star + half_star
 
-        # Is a superuser?
+        # Finds out if user is Super Reviewer
         super_user = review.find("strong", {"class": "super-reviewer-badge" })
 
         if super_user is None:
@@ -126,7 +126,8 @@ for page in range(number_of_reviews):
     except:
         loop_number += 1
         print(loop_number)
-        # break once we loop three times
+        # break once we loop 5 times
+        # change this number if want to increase/decrease number of times the film is looped over.
         if loop_number == 5:
             break
         else:
