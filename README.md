@@ -6,157 +6,82 @@ A script that takes User Reviews from IMD, Rotten Tomatoes and Allo Cine.
 
 ## New User Set-up
 
-## Windows
-
 ### **1. Downloading the Files**
 
-Head to - https://github.com/UoMResearchIT/haneke-scraper
+1. Head to - https://github.com/UoMResearchIT/haneke-scraper
 
-Click 'Clone or Download', select 'Download as .ZIP'
+2. Click 'Clone or Download', select 'Download as .ZIP'
 
-Unzip the file, put the 'haneke-scraper-master' into your 'Documents' directory.
+3. Unzip the file, put the 'haneke-scraper-master' into your 'Documents' directory.
 
 ### **2. Python Set-up**
 
-Open Command Prompt. To do this press the Windows button between 'Ctrl' and 'Alt' and type cmd.
+1. Download Anaconda, a Python distribution, here - https://www.anaconda.com/distribution/
 
-> NOTE: commands that `look like this` can be written directly or copied and pasted into the Command Prompt.
+2. Choose your OS, and download the the 'Python 3.7 version'.
 
-Type `python -V`. This will tell you what verison of Python you have. It needs to be at least Python 3+.
+3. Once it has finished downloading, install it, choosing the default options.
 
-> NOTE: If Python is not installed or below version 3.0, head to - https://www.python.org/downloads/ to  download the latest version.
+### **3. Virtual Environment Set-up**
 
-Using the Command Prompt, go to 'Documents'
+1. Open the 'Anaconda Navigator" application.
 
-`cd Documents`
+2. Click the 'Environments' tab on the left.
 
-`cd haneke-scraper-master`
+3. Click the 'Import' button at the bottom.
 
-We will be creating a Python Virtual Environment. This will keep the libraries required consistent, and won't interfere with other python projects.
+4. Click the folder button next to "Specification File'. Choose the 'environment.yml' file that's in the whatsapp_scraper_master directory.
 
-To install the Python Virtual Environment -
+5. Click 'Import'
 
-`pip install virtualenv`
+6. Once the environment is imported it will appear in the list of environments. It will be called 'whatsapp-conda-env'
 
-To create the Python Virtual Environment -
 
-`virtualenv -p python3 haneke-scraper-venv`
+### **4. Gecko Driver Set-up**
 
-To activate the Python Virtual Environment -
+1. Download and install Firefox from - https://www.mozilla.org/en-US/firefox/new/
+2. Download geckodriver from - https://github.com/mozilla/geckodriver/releases
+3. Add geckodriver to your PATH
 
-`\haneke-scraper-venv\Scripts\activate`
+On Windows - 
+1. Put geckodriver.exe in Program Files folder.
+2. in Start bar, search 'PATH', open 'Edit environment variables for your account'
+3. In 'User variables's for USERNAME', select 'Path', click 'edit'
+4. Click 'New'
+5. Copy `C:\Program Files\geckodriver` 
+6. Restart computer.
 
-You will notice there's a (haneke-scraper-venv) in the Command Promt. This means the Python Virtual Environment has been activated.
+On macOS -
+1. Put it in /Users/USERNAME/anaconda/bin
+2. Restart computer.
 
-Install the required python libraries -
+### **5. Running the Script.**
 
-`pip install -r requirements.txt`
+1. Click the play button next to the 'haneke-conda-env' environment, and choose 'Open Terminal'.
 
-### **3. Using the Script**
-
-After the set-up is complete it is time to use the script.
-
-Place all haneke message text files in the haneke-scraper-master directory.
-
-Open Command Prompt. To do this press the Windows button between 'Ctrl' and 'Alt' and type cmd.
-
-Type in the following commands
-
-`cd Documents` 
-
-`cd haneke-scraper-master`
-
-`haneke-scraper-venv\Scripts\activate`
-
-`haneke-scraper.py` or `python haneke-scraper.py`
-
-The scripts will process the message(s), create a new directory with the same name as the .txt file. 
-Inside will be the original .txt file as well as the .csv that the script has created.
-
-### **4. Importing into Excel**
-
-To import the data in to Excel -
-
-1. Open Excel,
-2. Click the 'Data' panel.
-3. Click 'From Text/CSV'
-4. Choose the .csv you want to import,
-5. Set 'File Origin" to '--None--' (at the top of the list), 'Delimiter' to 'Comma', Data Type Detection to 'Based on entire dataset'
-6. Click 'Load'. The data will now be imported to the open worksheet.
-
-## Mac
-
-### **1. Downloading the Files**
-
-Head to - https://github.com/UoMResearchIT/haneke-scraper
-
-Click 'Clone or Download', select 'Download as .ZIP'
-
-Unzip the file, put the 'haneke-scraper-master' into your 'Documents' directory.
-
-### **2. Python Set-up**
-
-Open Terminal. To do this open the 'Applications' directory, Terminal is inside the 'Utilities' directory.
-
-> NOTE: commands that `look like this` can be written directly, or copied and pasted into Terminal.
-
-Type `python -V` into the Terminal. This will tell you what verison of Python you have. It needs to be at least Python 3+.
-
-NOTE: If Python is not installed or below version 3.0, head to - https://www.python.org/downloads/ to download the latest version.
-
-Using cmd, go to your 'Documents' directory.
+2. In the terminal type - 
 
 `cd Documents`
 
+then
+
 `cd haneke-scraper-master`
 
-We will be creating a Python Virtual Environment. This will keep the libraries required consitent, and won't interfere with other python projects.
+then the script you want to run
 
-To install the Python Virtual Environment -
+`allocine.py` or `python whatsapp_scraper.py`
+`imdb.py` or `python imdb.py`
+`rottentomatoes.py` or `python rottentomatoes.py`
 
-`pip install virtualenv`
+The script will run, creating a new directory with a .csv file containing the user reviews of the chosen film.
 
-To create the Python Virtual Environment -
+### **Re-running the script in the future.**
 
-`virtualenv -p python3 haneke-scraper-venv`
+1. Open 'Anaconda Navigator'
 
+2. Click the 'Environments' tab on the left.
 
-To activate the Python Virtual Environment -
-
-`source haneke-scraper-venv/bin/activate`
-
-You will notice there's a (whatsapp-scraper-venv) in the Terminal. This means the Python Virtual Environment has been activated.
-
-Install the required python libraries -
-
-`pip install -r requirements.txt`
-
-### **3. Using the Script**
-
-After the set-up is complete it is time to use the script.
-
-Type in the following commands
-
-`cd Documents`
-
-`cd haneke-scraper-master` 
-
-`source haneke-scraper-venv/bin/activate`
-
-`allo_cine.py`or `rotten_tomatoes.py` or `imdb.py` (depending on which site you want to scrape)
-
-You will be prompted with a Title of the film and the URL for the User Reviews. The scripts will process the URL, the data will be outputted in `FILMNAME_REVIEWSITE.csv` eg. `cache_allocine.csv`
-
-### **4. Importing into Excel**
-
-To import the data in to Excel -
-
-1. Open Excel,
-2. Click the 'Data' panel.
-3. Click 'From Text/CSV'
-4. Choose the .csv you want to import,
-5. Set 'File Origin" to '--None--' (at the top of the list), 'Delimiter' to 'Comma', Data Type Detection to 'Based on entire dataset'
-6. Click 'Load'. The data will now be imported to the open worksheet.
+3. Repeat the steps in **5. Running the Script.**
 
 ## Experienced User Set-up
 
