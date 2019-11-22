@@ -69,9 +69,9 @@ then
 
 then the script you want to run
 
-`allocine.py` or `python whatsapp_scraper.py`
-`imdb.py` or `python imdb.py`
-`rottentomatoes.py` or `python rottentomatoes.py`
+`python allocine.py`
+`python imdb.py`
+`python rottentomatoes.py`
 
 The script will run, creating a new directory with a .csv file containing the user reviews of the chosen film.
 
