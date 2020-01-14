@@ -1,4 +1,4 @@
-# Haneke Scraper
+# Cinema User Review Scraper
 
 A script that takes User Reviews from IMD, Rotten Tomatoes and Allo Cine.
 
